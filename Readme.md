@@ -4,7 +4,7 @@
 
 
 
-## Instructions(running on Mac OSX)
+## Instructions *running on Mac OSX*
 
 #### Open the directory in the terminal
 #### Run the following command
