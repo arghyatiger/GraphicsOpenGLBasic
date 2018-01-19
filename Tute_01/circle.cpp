@@ -9,10 +9,17 @@ using namespace glm;
 
 #include "common/shader.hpp"
 #include "common/shader.cpp"
+#include <time.h>
+
+void delay(float secs)
+{
+	float end = clock()/CLOCKS_PER_SEC + secs;
+	while((clock()/CLOCKS_PER_SEC) < end);
+}
 
 int main( void )
 {
-	const int vertices = 10000;
+	const int vertices = 1000;
 	const float theta = 6.2831852/ vertices ; 
 	if( !glfwInit() )
 	{
@@ -24,11 +31,11 @@ int main( void )
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Open a window and create its OpenGL context
-	window = glfwCreateWindow( 500, 500, "Tutorial 02 - Red triangle", NULL, NULL);
+	window = glfwCreateWindow( 500, 500, "Cirlce", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
 		getchar();
@@ -49,7 +56,6 @@ int main( void )
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
 	GLuint VertexArrayID;
@@ -73,14 +79,14 @@ int main( void )
 
 		// Clear the screen
 		glClear( GL_COLOR_BUFFER_BIT );
-		float previousx=0.0f, previousy=0.0f,alpha=0;
-		for(int i=0;i<=vertices;i++)
+		float previousx = 0.0f, previousy = 0.0f, alpha = 0;
+		for(int i = 0;i <= vertices;i++)
 		{
-			alpha=alpha+theta;
-			g_vertex_buffer_data[3]= 0.5f * cos(alpha);
-			g_vertex_buffer_data[4]= 0.5f * sin(alpha);
-			g_vertex_buffer_data[6]=previousx;
-			g_vertex_buffer_data[7]=previousy;
+			alpha = alpha + theta;
+			g_vertex_buffer_data[3] = 0.5f * cos(alpha);
+			g_vertex_buffer_data[4] = 0.5f * sin(alpha);
+			g_vertex_buffer_data[6] = previousx;
+			g_vertex_buffer_data[7] = previousy;
 			previousx=g_vertex_buffer_data[3];
 			previousy=g_vertex_buffer_data[4];
 			glGenBuffers(1, &vertexbuffer);
@@ -103,6 +109,7 @@ int main( void )
 			);
 
 			// Draw the triangle !
+		
 			glDrawArrays(GL_TRIANGLES, 0, 3); // 3 indices starting at 0 -> 1 triangle
 
 			glDisableVertexAttribArray(0);
